@@ -257,6 +257,14 @@ pub struct KeyPurposeId {
     oid_value: untrusted::Input<'static>,
 }
 
+impl KeyPurposeId {
+    pub fn new(oid: &'static [u8]) -> Self {
+        KeyPurposeId {
+            oid_value: untrusted::Input::from(oid)
+        }
+    }
+}
+
 // id-pkix            OBJECT IDENTIFIER ::= { 1 3 6 1 5 5 7 }
 // id-kp              OBJECT IDENTIFIER ::= { id-pkix 3 }
 

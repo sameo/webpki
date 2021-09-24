@@ -203,4 +203,22 @@ impl<'a> EndEntityCert<'a> {
             untrusted::Input::from(signature),
         )
     }
+
+    /// Verifies that the certificate is valid
+    pub fn verify_cert_chain_with_eku(
+        &self,
+        required_eku: &'static [u8],
+        supported_sig_algs: &[&SignatureAlgorithm],
+        trust_anchors: &[crate::TrustAnchor],
+        intermediate_certs: &[&[u8]],
+        time: Time,
+        sub_ca_count: usize
+    ) -> Result<(), Error> {
+        let eku = verify_cert::KeyPurposeId::new(required_eku);
+
+        crate::verify_cert::build_chain(
+            eku, supported_sig_algs,
+            trust_anchors, intermediate_certs, &self.inner, time, sub_ca_count)
+    }
+
 }
